@@ -39,6 +39,7 @@ Then run the binary using by loading it and issuing the run command:
 / * run
 
 Okay
+/ *
 ```
 
 You should see something similar to the following:
