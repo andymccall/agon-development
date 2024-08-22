@@ -1,6 +1,6 @@
-### 00-firstprg
+### 01-helloworld
 
-This program is intended to test your build environment.  The program simply starts and stops.
+This program prints Hello, World! to the console.
 
 #### Building
 
@@ -39,7 +39,7 @@ mv src/main.bin bin/helloworld.bin
 
 #### Running the program
 
-The newsly built program can be run within the Fab Emulator using the following commands:
+The newly built program can be run within the Fab Emulator using the following commands:
 
 ```
 username@host:~$ make run
@@ -65,4 +65,4 @@ Hello, World!
 
 You should see something similar to the following:
 
-![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/01-helloworld/asm/assets/01-helloworld.png?raw=true)
+![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/01-helloworld/asm/assets/01-helloworld_asm.png?raw=true)

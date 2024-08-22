@@ -1,6 +1,6 @@
-### 00-helloworld
+### 01-helloworld
 
-This program is intended to test your build environment.  The program simply starts and stops.
+This program prints Hello, World! to the console.
 
 #### Building
 
