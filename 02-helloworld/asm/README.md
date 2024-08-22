@@ -1,4 +1,4 @@
-### 01-helloworld
+### 02-helloworld
 
 This program prints Hello, World! to the console.
 
@@ -7,12 +7,33 @@ This program prints Hello, World! to the console.
 Perform the following commands to compile the project:
 
 ```
-
-username@host:~$ cd agon-development/01-helloworld/c
+username@host:~$ cd agon-development/02-helloworld/asm
 username@host:~$ make
-[compiling] src/main.c
-[lto opt] obj/lto.bc
-[linking] bin/helloworld.bin
+Building project...
+mkdir -p bin
+ez80asm -x src/main.asm
+Assembling src/main.asm
+Pass 1...
+Pass 2...
+Done in 0.00 seconds
+
+Assembly statistics
+======================
+Label memory  : 80
+Labels        : 2
+
+Macro memory  : 0
+Macros        : 0
+
+Input buffers : 850
+---------------------
+Total memory  : 930
+
+Sources parsed: 1
+Binfiles read : 0
+
+Output size   : 116
+mv src/main.bin bin/helloworld.bin
 ```
 
 #### Running the program
@@ -30,7 +51,7 @@ This will launch the Fab emulator.  Once the emulator has started check the bina
 Volume: hostfs
 Directory: /
 
-helloworld.bin helloworld.map
+helloworld.bin
 ```
 
 Then run the binary using by loading it and issuing the run command:
@@ -39,10 +60,8 @@ Then run the binary using by loading it and issuing the run command:
 / * load helloworld.bin
 / * run
 Hello, World!
-
-Okay
 ```
 
 You should see something similar to the following:
 
-![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/01-helloworld/assets/01-helloworld_c.png?raw=true)
+![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/02-helloworld/asm/assets/02-helloworld_asm.png?raw=true)

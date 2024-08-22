@@ -1,9 +1,8 @@
 ;
-; Title:		       01-helloworld - Assembler Example
+; Title:		       01-hellochar - Assembler Example
 ;
-; Description:         A program that outputs Hello, World! on the Agon Light 2
-;                      intended to check your environment works with no
-;                      issues
+; Description:         A program that outputs a character on the Agon Light 2
+;                      
 ; Author:		       Andy McCall, mailme@andymccall.co.uk
 ;
 ; Created:		       2024-08-22 @ 18:21
@@ -27,10 +26,8 @@ start:
     push ix
     push iy
 
-    ld hl,hello_msg
-    ld bc,0
-    ld a,0
-    rst.lil $18
+    ld a,'A'
+    rst.lil $10
 
     pop iy
     pop ix
@@ -40,6 +37,3 @@ start:
     ld hl,0
 
     ret
-
-hello_msg:
-    .db "Hello, World!",13,10,0

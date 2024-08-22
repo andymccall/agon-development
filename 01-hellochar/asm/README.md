@@ -1,13 +1,13 @@
-### 01-helloworld
+### 01-hellochar
 
-This program prints Hello, World! to the console.
+This program prints a character to the console.
 
 #### Building
 
 Perform the following commands to compile the project:
 
 ```
-username@host:~$ cd agon-development/01-helloworld/asm
+username@host:~$ cd agon-development/01-hellochar/asm
 username@host:~$ make
 Building project...
 mkdir -p bin
@@ -19,21 +19,21 @@ Done in 0.00 seconds
 
 Assembly statistics
 ======================
-Label memory  : 80
-Labels        : 2
+Label memory  : 38
+Labels        : 1
 
 Macro memory  : 0
 Macros        : 0
 
-Input buffers : 850
+Input buffers : 695
 ---------------------
-Total memory  : 930
+Total memory  : 733
 
 Sources parsed: 1
 Binfiles read : 0
 
-Output size   : 116
-mv src/main.bin bin/helloworld.bin
+Output size   : 92
+mv src/main.bin bin/hellochar.bin
 ```
 
 #### Running the program
@@ -51,17 +51,17 @@ This will launch the Fab emulator.  Once the emulator has started check the bina
 Volume: hostfs
 Directory: /
 
-helloworld.bin
+hellochar.bin
 ```
 
 Then run the binary using by loading it and issuing the run command:
 
 ```
-/ * load helloworld.bin
+/ * load hellochar.bin
 / * run
-Hello, World!
+A
 ```
 
 You should see something similar to the following:
 
-![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/01-helloworld/asm/assets/01-helloworld_asm.png?raw=true)
+![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/01-hellochar/asm/assets/01-hellochar.png?raw=true)
