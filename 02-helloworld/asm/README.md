@@ -64,4 +64,4 @@ Hello, World!
 
 You should see something similar to the following:
 
-![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/02-helloworld/asm/assets/02-helloworld_asm.png?raw=true)
+![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/02-helloworld/assets/02-helloworld_asm.png?raw=true)
