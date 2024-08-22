@@ -64,4 +64,4 @@ Then run the binary using by loading it and issuing the run command:
 
 You should see something similar to the following:
 
-![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/00-firstprg/assets/01-firstprg_asm.png?raw=true)
+![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/00-firstprg/assets/00-firstprg_asm.png?raw=true)
