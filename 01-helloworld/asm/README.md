@@ -7,8 +7,7 @@ This program prints Hello, World! to the console.
 Perform the following commands to compile the project:
 
 ```
-
-username@host:~$ cd agon-development/00-helloworld/asm
+username@host:~$ cd agon-development/01-helloworld/asm
 username@host:~$ make
 Building project...
 mkdir -p bin

@@ -8,7 +8,7 @@ Perform the following commands to compile the project:
 
 ```
 
-username@host:~$ cd agon-development/00-helloworld/c
+username@host:~$ cd agon-development/01-helloworld/c
 username@host:~$ make
 [compiling] src/main.c
 [lto opt] obj/lto.bc
@@ -45,4 +45,4 @@ Okay
 
 You should see something similar to the following:
 
-![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/01-helloworld/c/assets/01-helloworld_c.png?raw=true)
+![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/01-helloworld/assets/01-helloworld_c.png?raw=true)
