@@ -1,5 +1,7 @@
 # Agon Light 2 Development Environment Setup
 
+![Discord](https://img.shields.io/discord/1158535358624039014)
+
 This README.md and repository will assist you in setting up a development environment for the Agon Light 2 using the following tools:
 
 - VSCode as an Integrated Development Environment
@@ -8,6 +10,8 @@ This README.md and repository will assist you in setting up a development enviro
 - Fab Agon emulator for testing
 
 The repository has examples using both Z80 assembly and C. Each example has a README.md file that explains how to compile and run the example.
+
+The guide is intended for people running on Linux using x86_64 platofrm and as such the binaries linked are for this architecture.  If you are running a differnet platform, such as arm64 then you will need to download the correct binaries for you platform.  If the correct binaries are not available for your platform you may need to build the tool yourself from source code.  At least one user has reported success following these instructions, but compiling the tools from source, on the arm64 platform.
 
 ### Install VSCode
 
@@ -139,6 +143,10 @@ OPTIONS:
 ### Build software!
 
 You should now be able to build either the assembler or C programs in this repository.
+
+### Where to get help
+
+You can ask for help in the Agon and Console8 Community Discord channel, which can be found [here](https://discord.gg/JpncxCTA7s).
 
 ### Found this guide useful?
 
