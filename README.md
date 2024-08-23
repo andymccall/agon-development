@@ -1,7 +1,5 @@
 # Agon Light 2 Development Environment Setup
 
-![Discord](https://img.shields.io/discord/1158535358624039014)
-
 This README.md and repository will assist you in setting up a development environment for the Agon Light 2 using the following tools:
 
 - VSCode as an Integrated Development Environment
