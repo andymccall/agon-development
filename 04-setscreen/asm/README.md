@@ -1,13 +1,13 @@
-### 03-setmode
+### 04-setscreen
 
-This program changes the screen mode.
+This program changes the screen color.
 
 #### Building
 
 Perform the following commands to compile the project:
 
 ```
-username@host:~$ cd agon-development/03-setmode/asm
+username@host:~$ cd agon-development/04-setscreen/asm
 username@host:~$ make
 Building project...
 mkdir -p bin
@@ -19,21 +19,21 @@ Done in 0.00 seconds
 
 Assembly statistics
 ======================
-Label memory  : 79
-Labels        : 2
+Label memory  : 348
+Labels        : 8
 
 Macro memory  : 0
 Macros        : 0
 
-Input buffers : 833
+Input buffers : 1297
 ---------------------
-Total memory  : 912
+Total memory  : 1645
 
 Sources parsed: 1
 Binfiles read : 0
 
-Output size   : 145
-mv src/main.bin bin/setmode.bin
+Output size   : 153
+mv src/main.bin bin/setscreen.bin
 ```
 
 #### Running the program
@@ -51,16 +51,16 @@ This will launch the Fab emulator.  Once the emulator has started check the bina
 Volume: hostfs
 Directory: /
 
-setmode.bin
+setscreen.bin
 ```
 
 Then run the binary using by loading it and issuing the run command:
 
 ```
-/ * load setmode.bin
+/ * load setscreen.bin
 / * run
 ```
 
 You should see something similar to the following:
 
-![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/03-setmode/assets/03-setmode_asm.png?raw=true)
+![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/04-setscreen/assets/04-setscreen_asm.png?raw=true)
