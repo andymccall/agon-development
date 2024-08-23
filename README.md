@@ -146,6 +146,8 @@ You should now be able to build either the assembler or C programs in this repos
 
 You can ask for help in the Agon and Console8 Community Discord channel, which can be found [here](https://discord.gg/JpncxCTA7s).
 
+More information on programming the Agon and Console8 can be found in the community documentation [here](https://agonconsole8.github.io/agon-docs/).
+
 ### Found this guide useful?
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/andymccall)
