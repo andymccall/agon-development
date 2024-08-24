@@ -1,5 +1,53 @@
 # Agon Light 2 Development Environment Setup
 
+## Intro
+
+![Agon Light 2 Header](https://github.com/andymccall/agon-development/blob/main/assets/header.jpg?raw=true)
+
+AgonLight2 is a re-design of the original Open Source Hardware design of AgonLight made by Bernardo Kastrup a.k.a. TheByteAttic. The firmware is developed by Dean Belfield. AgonLight2 is not a emulator, it uses modern ez80 processor which is new improved version of the classic Z80 which can address up to 16MB of memory (24 bit address bus) and runs at 20Mhz! ESP32-PICO-D4 is used as sound and graphics co-processor. The micro SD card acts like disk drive where you can load and save programs, write and read data. UEXT and GPIO ports allow AgonLight to interface outside world with digital Inputs, outputs, SPI, I2C, and UART. LiPo battery charger allows the whole computer to run for hours on single LiPo battery even if no external power supply is present. Color VGA output supports 320x200 64 colors, 512x384 16 colors, 640x480 16 colors, 1024x768 2 colors. AgonLight2 combines retro with modern, you can do old school games and at the same time you can do also small home automation jobs, attaching different sensors and relays to the UEXT/GPIO ports.
+
+## Features
+
+AgonLight2 has these features:
+
+* eZ80 processor with 128KB flash 8KB SRAM
+* 512KB external SRAM
+* ESP32-D4-PICO co-processor for IO
+* VGA output
+* USB/PS2 keyboard
+* MicroSD card connector
+* Li-Po battery charger and step-up converter
+* UEXT connector
+* GPIO 34-pin connector
+*  6 mount holes
+* Dimensions: (106 x 65) mm
+
+The Agon is available as a bare single board computer:
+
+![Agon Light 2 Single Board Computer](https://github.com/andymccall/agon-development/blob/main/assets/agonlight2.jpg?raw=true)
+
+Boxed in a nice case:
+
+![Agon Light 2 Boxed](https://github.com/andymccall/agon-development/blob/main/assets/agonlight2-boxed.jpg?raw=true)
+
+There's an Agon Origins Edition that's fully compatible, but based on an earlier design, which is available as a bare single board computer:
+
+![Agon Origins Edition Single Board Computer](https://github.com/andymccall/agon-development/blob/main/assets/agon-origins.jpg?raw=true)
+
+Or in a nice boxed case:
+
+![Agon Light 2 Boxed](https://github.com/andymccall/agon-development/blob/main/assets/agon-origins-boxed.jpg?raw=true)
+
+All these variants can be purchased from [Olimex.com](https://www.olimex.com/) or [The Pi Hut](https://thepihut.com/). They can be purchased as bundles or seperately, so you can box your Agon Light 2 later if you wish to.
+
+Finally, there's also the Agon Console8 variant, which is a "console-ized" version of the Agon computer:
+
+![Agon Console8](https://github.com/andymccall/agon-development/blob/main/assets/agon-console8.jpg?raw=true)
+
+This is available from [Herber Retro Collective](https://shop.heber.co.uk/) as a bundle.
+
+## This Document
+
 This README.md and repository will assist you in setting up a development environment for the Agon Light 2 using the following tools:
 
 - VSCode as an Integrated Development Environment
