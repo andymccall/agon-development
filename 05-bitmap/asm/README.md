@@ -60,3 +60,8 @@ Then run the binary using by loading it and issuing the run command:
 / * load bitmap.bin
 / * run
 ```
+
+
+You should see something similar to the following:
+
+![Screenshot of the Fab Emulator](https://github.com/andymccall/agon-development/blob/main/05-bitmap/assets/05-bitmap_asm.png?raw=true)
