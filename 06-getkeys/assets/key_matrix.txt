@@ -1,0 +1,19 @@
+Agon Key Matrix
+
+IX / Bit    7           6           5           4           3           2           1       0
+    00      CTRL-R      SHIFT-R     ALT-L       CTRL-L      SHIFT-L
+    01                                                                                      ALT-R
+    02      -           F7          8           F4          5           4           3       Q
+    03                  F10                     T                                   LEFT
+    04      0           9           I           7                       E           W
+    05      BK SPACE                `~                                              DOWN
+    06      P           O           U           6           R           D           2       1    
+    07      ;                                                                       UP      [
+    08      CAPS-L      K           J           Y           F           X           A
+    09                              NUM-LOCK                                        ENTER
+    0A                  L           N           H           G           C           S
+    0B                                                                              DELETE  ]
+    0C      .>          ,<          M           B           V           SPACE       Z       TAB
+    0D                                                                                      /?
+    0E      F9          F8          F6          F5          F3          F2          F1      ESCAPE
+    0F                              WINDOWS                                         RIGHT
