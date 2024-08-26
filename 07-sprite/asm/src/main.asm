@@ -218,7 +218,7 @@ hide_sprite:
 @end:
 
 start_msg:
-    .db "Press A,W,S,D to move the zombie.",,13,10,"Esc will quit...",13,10,0
+    .db "Press A,W,S,D to move the zombie.",13,10,"Esc will quit...",13,10,0
 quit_msg:
     .db 13,10,"Quitting...",13,10,0
 space_msg:
