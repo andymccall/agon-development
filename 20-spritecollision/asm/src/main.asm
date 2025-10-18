@@ -37,6 +37,8 @@
     include "src/includes/api/macro_sprite.inc"
     include "src/includes/api/macro_text.inc"
     include "src/includes/api/macro_bitmap.inc"
+    include "src/includes/api/math.inc"
+    include "src/includes/api/number.inc"
 
 ; Game includes
     include "src/includes/game/globals.inc"
@@ -86,6 +88,8 @@ start:
     ld hl, game_msg
     call vdu_text_print
 
+    call print_xy
+
     ld a, SPRITE_COUNT
     call vdu_sprite_activate
 
@@ -108,6 +112,8 @@ game_loop:
     call vdu_refresh
 
     call handle_input
+
+    call print_xy
 
     jp game_loop
 
@@ -172,15 +178,7 @@ d_pressed:
     ld a, (sprite_x + 1)
     ld h, a
 
-    ; If X > 496, skip (compare against 385 for strict '>')
-    push hl
-    ld de, 496            ; 0x0181
-    or a                  ; clear carry
-    sbc hl, de            ; HL - 496 (24-bit in ADL)
-    pop hl
-    jp nc, d_pressed_end  ; HL >= 496 -> skip increment
-
-    ; X <= 496 -> increment candidate
+    ; Increment candidate X position
     inc hl
 
     ; Candidate BC = X (from HL), DE = Y (from memory)
@@ -191,12 +189,12 @@ d_pressed:
     ld a, (sprite_y + 1)
     ld d, a
 
-    ; Check collision at candidate position; Carry set => collision
-    call detect_collision
-    jp c, d_pressed_end   ; collision -> skip store/move
-
+    ; Reject moves that exceed screen bounds or collide
     call detect_bounds
     jp c, d_pressed_end
+
+    call detect_collision
+    jp c, d_pressed_end   ; collision -> skip store/move
 
     ; No collision -> store back new X and move
     ld a, c
@@ -222,12 +220,7 @@ a_pressed:
     ld a, (sprite_x + 1)
     ld h, a
 
-    ; If X == 0, skip decrement (top-left origin)
-    ld a, h
-    or l
-    jp z, a_pressed_end
-
-    ; X > 0 -> decrement candidate
+    ; Decrement candidate X position
     dec hl
 
     ; Candidate BC = X (from HL), DE = Y (from memory)
@@ -238,12 +231,12 @@ a_pressed:
     ld a, (sprite_y + 1)
     ld d, a
 
-    ; Check collision at candidate position; Carry set => collision
-    call detect_collision
-    jp c, a_pressed_end   ; collision -> skip store/move
-
+    ; Reject moves that exceed screen bounds or collide
     call detect_bounds
     jp c, a_pressed_end
+
+    call detect_collision
+    jp c, a_pressed_end   ; collision -> skip store/move
 
     ; No collision -> store back new X and move
     ld a, c
@@ -274,22 +267,17 @@ w_pressed:
     ld a, (sprite_y + 1)
     ld h, a
 
-    ; If Y <= 0, skip decrement (bytewise, ADL-safe)
-    ld a, h
-    or l
-    jp z, w_pressed_end
-
     ; Candidate DE = Y-1 from (HL-1), BC = X from memory
     dec hl
     ld e, l
     ld d, h
 
-    ; Check collision at candidate position; Carry set => collision
-    call detect_collision
-    jp c, w_pressed_end   ; collision -> skip store/move
-
+    ; Reject moves that exceed screen bounds or collide
     call detect_bounds
     jp c, w_pressed_end
+
+    call detect_collision
+    jp c, w_pressed_end   ; collision -> skip store/move
 
     ; No collision -> store back new Y and move
     ld a, e
@@ -321,30 +309,19 @@ s_pressed:
     ld a, (sprite_y + 1)
     ld h, a
 
-    ; If Y >= 368 (0x0170), skip increment
-    push hl
-    ; DE = 0x0170 with upper byte zeroed for ADL-safe SBC
-    ld de, 0
-    ld e, 112          ; low byte = 0x70 (112)
-    ld d, 1            ; high byte = 0x01
-    or a               ; clear carry
-    sbc hl, de         ; HL - 368
-    pop hl
-    jp nc, s_pressed_end   ; Y >= 368 -> skip
-
-    ; Y < 368 -> increment candidate (move down)
+    ; Increment candidate Y position (move down)
     inc hl
 
     ; Candidate DE = Y (from HL), BC = X from memory (already loaded)
     ld e, l
     ld d, h
 
-    ; Check collision at candidate position; Carry set => collision
-    call detect_collision
-    jp c, s_pressed_end   ; collision -> skip store/move
-
+    ; Reject moves that exceed screen bounds or collide
     call detect_bounds
     jp c, s_pressed_end
+
+    call detect_collision
+    jp c, s_pressed_end   ; collision -> skip store/move
 
     ; No collision -> store back new Y and move
     ld a, e
@@ -359,77 +336,123 @@ s_pressed_end:
 detect_collision:
     ; Inputs: BC = candidate X, DE = candidate Y
     ; Outputs: Carry set on collision, Carry clear on no collision
-    ; Clobbers: AF, HL, DE (restored), BC (restored)
+    ; Clobbers: AF, HL (BC/DE preserved)
 
     push bc
     push de
 
-    ; 1) If (X + 16) <= 100 -> no overlap
-    ld hl, 0             ; clear upper for ADL safety
-    ld l, c
-    ld h, b
-    ld de, 16
-    add hl, de            ; HL = X + 16
-    ld de, 0
-    ld e, 100            ; left edge of block
-    or a                  ; clear carry
-    sbc hl, de            ; (X+16) - 100
-    jr c, no_collision   ; X+16 < 100 -> no overlap
-    jr z, no_collision   ; X+16 == 100 -> no overlap (touching at edge)
-
-    ; 2) If X >= 200 -> no overlap (right edge of block)
+    ; Right edge of sprite past block's left edge? (X + width) > 100
     ld hl, 0
     ld l, c
-    ld h, b               ; HL = X
-    ld de, 0
-    ld e, 200            ; right edge of block
-    or a
-    sbc hl, de            ; X - 200
-    jr nc, no_collision  ; X >= 200 -> no overlap
+    ld h, b
+    ld de, SPRITE_PAC_MAN_WIDTH
+    add hl, de
+    ld de, 100
+    call math_greater_than
+    jr nc, collision_clear
 
-    ; 3) If (Y + 16) <= 200 -> no overlap (top edge of block)
-    pop hl                ; HL = saved candidate Y
-    push hl               ; re-save Y to maintain stack
-    ld de, 0
-    ld e, 16
-    add hl, de            ; HL = Y + 16
-    ld de, 0
-    ld e, 200            ; top edge of block
-    or a
-    sbc hl, de            ; (Y+16) - 200
-    jr c, no_collision   ; Y+16 < 200 -> no overlap
-    jr z, no_collision   ; Y+16 == 200 -> no overlap
+    ; Left edge of sprite beyond block's right edge? X >= 200
+    ld hl, 0
+    ld l, c
+    ld h, b
+    ld de, 200
+    call math_less_than
+    jr nc, collision_clear
 
-    ; 4) If Y >= 220 -> no overlap (bottom edge of block)
-    pop hl                ; HL = saved candidate Y
-    push hl               ; re-save Y to maintain stack
-    ld de, 0
-    ld e, 220
-    or a
-    sbc hl, de            ; Y - 220
-    jr nc, no_collision  ; Y >= 220 -> no overlap
+    ; Bottom edge of sprite past block's top edge? (Y + height) > 200
+    pop hl
+    push hl
+    ld de, SPRITE_PAC_MAN_HEIGHT
+    add hl, de
+    ld de, 200
+    call math_greater_than
+    jr nc, collision_clear
 
-    ; Overlaps in both axes -> collision
+    ; Top edge of sprite beyond block's bottom edge? Y >= 220
+    pop hl
+    push hl
+    ld de, 220
+    call math_less_than
+    jr nc, collision_clear
+
+    ; Overlapping in both axes -> collision
     pop de
     pop bc
-    scf                   ; set carry to indicate collision
+    scf
     ret
 
-no_collision:
+collision_clear:
     pop de
     pop bc
-    or a                  ; clear carry to indicate no collision
+    or a
     ret
 
 detect_bounds:
+    ; Inputs: BC = candidate X, DE = candidate Y
+    ; Outputs: Carry set when candidate is outside the screen bounds
+    ; Clobbers: AF, HL (BC/DE preserved)
+
     push bc
     push de
 
-no_bounds:
+    ; Check X > max_x
+    ld hl, 0
+    ld l, c
+    ld h, b
+    ld a, (max_x)
+    ld e, a
+    ld a, (max_x + 1)
+    ld d, a
+    call math_greater_than
+    jr c, bounds_fail
+
+    ; Check Y > max_y
+    pop hl
+    push hl
+    ld a, (max_y)
+    ld e, a
+    ld a, (max_y + 1)
+    ld d, a
+    call math_greater_than
+    jr c, bounds_fail
+
+    ; Candidate is within bounds
     pop de
     pop bc
-    or a                  ; clear carry to indicate no collision
+    or a
     ret
+
+bounds_fail:
+    pop de
+    pop bc
+    scf
+    ret
+
+print_xy:
+
+    ld hl, x_data
+    call vdu_text_print
+
+    ld a, (sprite_x)
+    call number_print_dec
+
+    ld hl, y_data
+    call vdu_text_print
+
+    ld a, (sprite_y)
+    call number_print_dec
+
+    ret
+
+x_data:
+    .db     31, 1, 3
+    .db     "X :",0
+x_data_end:
+
+y_data:
+    .db     31, 1, 4
+    .db     "Y :",0
+y_data_end:
 
 game_msg:
     .db "Press A,W,S,D to move Pac-Man.",13,10,"Esc will quit...",13,10,0
