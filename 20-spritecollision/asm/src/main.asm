@@ -449,13 +449,18 @@ print_xy:
     ld a,'/'
     rst.lil $10
 
-
     ld hl, 0
     ld a, (max_x)
     ld l, a
     ld a, (max_x + 1)
     ld h, a
     call number_print_dec
+
+    ; Print a space at the end as a
+    ; hacky way to pad/clear the line for when
+    ; we drop to double and single digits
+    ld a,' '
+    rst.lil $10
 
     ld hl, y_data
     call vdu_text_print
@@ -476,6 +481,12 @@ print_xy:
     ld a, (max_y + 1)
     ld h, a
     call number_print_dec
+
+    ; Print a space at the end as a
+    ; hacky way to pad/clear the line for when
+    ; we drop to double and single digits
+    ld a,' '
+    rst.lil $10
 
     ret
 
