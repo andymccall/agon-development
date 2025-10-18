@@ -61,6 +61,12 @@ start:
 
     call vdu_cursor_off
 
+    ; I call these here because I want to get the screen mode in the
+    ; next step, if I don't call them the original screen mode will
+    ; be returned not the new screen mode
+    call vdu_refresh
+    call vdu_vblank
+
     ; Determine screen bounds and compute maximum sprite coordinates
     ; max_x = screen_width  - SPRITE_PAC_MAN_WIDTH
     ; max_y = screen_height - SPRITE_PAC_MAN_HEIGHT
@@ -433,13 +439,42 @@ print_xy:
     ld hl, x_data
     call vdu_text_print
 
+    ld hl, 0
     ld a, (sprite_x)
+    ld l, a
+    ld a, (sprite_x + 1)
+    ld h, a
+    call number_print_dec
+
+    ld a,'/'
+    rst.lil $10
+
+
+    ld hl, 0
+    ld a, (max_x)
+    ld l, a
+    ld a, (max_x + 1)
+    ld h, a
     call number_print_dec
 
     ld hl, y_data
     call vdu_text_print
 
+    ld hl, 0
     ld a, (sprite_y)
+    ld l, a
+    ld a, (sprite_y + 1)
+    ld h, a
+    call number_print_dec
+
+    ld a,'/'
+    rst.lil $10
+
+    ld hl, 0
+    ld a, (max_y)
+    ld l, a
+    ld a, (max_y + 1)
+    ld h, a
     call number_print_dec
 
     ret

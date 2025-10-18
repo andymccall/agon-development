@@ -1,85 +1,79 @@
 ; CREDIT: Code from Richard Turnnidge's assembly port of my Number Guess game
 ; TODO: study this code and understand how it works, rewrite in my own style
-number_print_dec:               ; debug A to screen as 3 char string pos
+number_print_dec:               ; print unsigned HL (0..16,777,215) as decimal
 
     push af
-    ld a, 48
-    ld (answer),a 
-    ld (answer+1),a 
-    ld (answer+2),a     ; reset to default before starting
+    push bc
+    push de
 
-                        ; is it bigger than 200?
+    ld b, 0                    ; track when output has started
+
+    ld de, 10000000
+    call number_print_calc_digit
+    call number_print_emit_digit
+
+    ld de, 1000000
+    call number_print_calc_digit
+    call number_print_emit_digit
+
+    ld de, 100000
+    call number_print_calc_digit
+    call number_print_emit_digit
+
+    ld de, 10000
+    call number_print_calc_digit
+    call number_print_emit_digit
+
+    ld de, 1000
+    call number_print_calc_digit
+    call number_print_emit_digit
+
+    ld de, 100
+    call number_print_calc_digit
+    call number_print_emit_digit
+
+    ld de, 10
+    call number_print_calc_digit
+    call number_print_emit_digit
+
+    ld de, 1
+    call number_print_calc_digit
+    add a, '0'
+    rst.lil $10
+
+    pop de
+    pop bc
     pop af
+    ret
 
-    ld (base),a         ; save
-
-    cp 200
-    jr c,_under200      ; not 200+
-    sub a, 200
-    ld (base),a         ; sub 200 and save
-
-    ld a, 50            ; 2 in ascii
-    rst.lil $10         ; print out a '200' digit
-    ld (answer),a
-    jr _under100
-
-_under200:
-    cp 100
-    jr c,_under100      ; not 200+
-    sub a, 100
-    ld (base),a         ; sub 200 and save
-
-    ld a, 49            ; 1 in ascii
-    ld (answer),a
- 
-    rst.lil $10         ; print out a '100' digit
-    jr _under100
-
-
-_under100:
-    ld a, (base)
-    ld c,a
-    ld d, 10
-    call C_Div_D
-
-    add a, 48
-    ld (answer + 2),a
-    ld b, a 
-
-    ld a, c
+number_print_emit_digit:
     cp 0
-    jr z, _lastDigit
+    jr nz, number_print_emit_non_zero
+    ld a, b
+    or a
+    ret z
+    ld a, 0
+    jr number_print_emit_output
 
-    add a, 48
-    ld (answer + 1),a
-    rst.lil $10         ; print out 10s digit
-_lastDigit:
-    ld a,b 
-    rst.lil $10         ; print out last digit
+number_print_emit_non_zero:
+    ld b, 1
 
-    ret 
+number_print_emit_output:
+    add a, '0'
+    rst.lil $10
+    ret
 
-answer:         .db     "000"       ; string to output
+number_print_calc_digit:
+    ld c, 0
 
-base:           .db     0       ; used in calculations
-
-C_Div_D:
-;Inputs:
-;     C is the numerator
-;     D is the denominator
-;Outputs:
-;     A is the remainder
-;     B is 0
-;     C is the result of C/D
-;     D,E,H,L are not changed
-;
-    ld b,8
-    xor a
-    sla c
-    rla
-    cp d
-    jr c,$+4
+number_print_calc_loop:
+    xor a                     ; clear carry before subtract
+    sbc hl, de
+    jr c, number_print_calc_done
     inc c
-    sub d
-    djnz $-8
+    jr number_print_calc_loop
+
+number_print_calc_done:
+    add hl, de                ; undo last subtract
+    ld a, c
     ret
